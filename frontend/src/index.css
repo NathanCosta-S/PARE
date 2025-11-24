@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base da página */
+@layer base {
+  html, body, #root { height: 100%; }
+  body {
+    @apply text-gray-900 font-sans antialiased;
+    background: #fefefe url("./imgs/background-imagem.jpeg") center/cover no-repeat fixed;
+  }
+}
+
+/* Tokens reutilizáveis */
+@layer components {
+  .container-page { @apply container max-w-6xl; }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-card border border-gray-200/60;
+  }
+  .card-body { @apply p-5 sm:p-6; }
+  .card-title { @apply text-base font-semibold text-gray-900; }
+  .card-muted { @apply text-sm text-gray-500; }
+
+  .section {
+    @apply card;
+  }
+  .section-header {
+    @apply border-b border-gray-200/80 px-5 sm:px-6 py-4;
+  }
+  .section-title {
+    @apply text-sm font-medium text-gray-700;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2
+           text-sm font-medium border border-gray-300 bg-white text-gray-900
+           hover:bg-orange-100 hover:border-orange-300 hover:text-orange-700
+           active:scale-[0.98] transition-all duration-200;
+  }
+  .btn-primary {
+    @apply bg-brand-500 text-white border-brand-500 hover:bg-brand-600;
+  }
+  .btn-ghost {
+    @apply bg-transparent border-gray-200 hover:bg-gray-100;
+  }
+  .btn-icon {
+    @apply inline-flex items-center justify-center rounded-xl border border-gray-200 w-10 h-10 bg-white hover:bg-gray-100;
+  }
+
+  .input {
+    @apply w-full rounded-xl border-gray-300 focus:border-brand-500 focus:ring-2 focus:ring-brand-200;
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm;
+  }
+
+  /* “Stat” da Home */
+  .stat {
+    @apply card;
+  }
+  .stat-body { @apply p-5 sm:p-6 flex items-center justify-between; }
+  .stat-label { @apply text-sm text-gray-500; }
+  .stat-value { @apply text-3xl font-semibold text-gray-900; }
+
+  /* Lista de atividades */
+  .activity {
+    @apply flex items-start gap-3 rounded-2xl border border-gray-200 bg-white p-4 shadow-soft;
+  }
+  .activity-title { @apply font-medium text-gray-900; }
+  .activity-meta { @apply text-sm text-gray-500; }
+}
+
+/* Tabelas “limpas” */
+@layer components {
+  .table {
+    @apply w-full text-sm;
+  }
+  .table thead th {
+    @apply text-left font-medium text-gray-600 bg-gray-50 px-4 py-3 border-b border-gray-200;
+  }
+  .table tbody td {
+    @apply px-4 py-3 border-b border-gray-100 text-gray-700;
+  }
+  .table tbody tr:hover td { @apply bg-gray-50; }
+}

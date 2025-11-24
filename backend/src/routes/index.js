@@ -1,0 +1,20 @@
+import { Router } from 'express';
+import turmas from './turmas.routes.js';
+import alunos from './alunos.routes.js';
+import aulas from './aulas.routes.js';
+import avaliacoes from './avaliacoes.routes.js';
+import notas from './notas.routes.js';
+import ocorrencias from './ocorrencias.routes.js';
+import calendario from './calendario.routes.js';
+import disciplinas from './disciplinas.routes.js'; 
+
+const router = Router();
+router.use('/turmas', turmas);
+router.use('/alunos', alunos);
+router.use('/aulas', aulas);
+router.use('/avaliacoes', avaliacoes);
+router.use('/notas', notas);
+router.use('/ocorrencias', ocorrencias);
+router.use('/calendario', calendario);
+router.use('/disciplinas', disciplinas); 
+export default router;
