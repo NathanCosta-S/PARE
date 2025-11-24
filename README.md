@@ -1,207 +1,130 @@
-📘 PARE – Plataforma Acadêmica de Registro Escolar
+# PARE - Gestão Escolar (Admin / Professor / Aluno)
 
-Sistema completo para gerenciamento acadêmico, com módulos para Administração, Professores e Alunos, integrando chamadas, notas, turmas, matérias e atribuições.
+Aplicação full-stack para gestão escolar com três perfis: **admin**, **professor** e **aluno**. Inclui autenticação JWT, cadastro de usuários, turmas e matérias, atribuições de professor/aluno a turma, chamadas, lançamento de notas (P1/P2/T1/T2) com média e visualização por perfil. Front-end em React + Tailwind; back-end em Node.js + Express + MongoDB (Mongoose).
 
-🚀 Visão Geral
+---
 
-O PARE é um sistema Full Stack desenvolvido para escolas, cursos e instituições de ensino que precisam de uma solução moderna e eficiente para:
+## 📦 Estrutura do projeto
 
-Controle de usuários
+- `backend/`: API Express conectada ao MongoDB.
+  - `src/models/`: esquemas Mongoose (User, Turma, Atribuições, Nota, Chamada, etc).
+  - `src/controllers/`: regras de negócio (auth, notas, aluno, professor, admin).
+  - `src/routes/`: rotas REST (auth, admin, professor, aluno, turmas, notas, chamada).
+  - `src/middlewares/`: autenticação JWT (`auth.middleware`) e checagem de role (`role.middleware`).
+  - `src/server.js`: bootstrap da API, conexão Mongo e montagem de rotas.
+- `frontend/`: SPA em React.
+  - `src/App.jsx`: roteamento principal protegido.
+  - `src/layouts/AppLayout.jsx`: layout com Header.
+  - `src/components/Header.jsx`: menu único (Calendário) + logout.
+  - `src/pages/`: telas para cada perfil (professor, aluno, admin) e calendário.
+  - `src/lib/api.js`: axios pré-configurado com baseURL e interceptor de token.
+  - `tailwind.config.js` / `index.css`: tema visual e utilitários.
 
-Gestão de turmas e matérias
+---
 
-Lançamento e consulta de notas
+## 🚀 Como rodar
 
-Registro e histórico de chamadas
+### Pré-requisitos
+- Node 18+
+- MongoDB rodando localmente (ou URI de conexão)
 
-Painéis independentes para Admin, Professor e Aluno
-
-Autenticação segura com JWT
-
-Interface rápida, responsiva e moderna
-
-O sistema segue arquitetura modular, escalável e fácil de manter, utilizando tecnologias de ponta no frontend e backend.
-
-🛠️ Tecnologias Utilizadas
-Backend
-
-Node.js
-
-Express.js
-
-MongoDB + Mongoose
-
-JWT (JSON Web Token)
-
-Bcrypt.js
-
-Dotenv
-
-Nodemon
-
-Arquitetura em camadas (Models, Controllers, Routes, Middlewares)
-
-Frontend
-
-React.js
-
-Vite
-
-React Router DOM
-
-Context API (Autenticação)
-
-Axios com Interceptors
-
-TailwindCSS
-
-Componentização moderna
-
-Geral
-
-Git & GitHub
-
-VS Code
-
-RESTful API
-
-Postman / Insomnia para testes
-
-🔐 Funcionalidades Principais
-👨‍💼 Admin
-
-Gerenciar usuários (criar, editar, remover)
-
-Criar/editar turmas e matérias
-
-Atribuir professores a turmas e matérias
-
-Atribuir alunos a turmas
-
-Acompanhar organização geral do sistema
-
-👨‍🏫 Professor
-
-Ver turmas e matérias atribuídas
-
-Lançar notas por matéria
-
-Consultar notas lançadas
-
-Registrar presença (chamada)
-
-Acessar histórico de chamadas
-
-👨‍🎓 Aluno
-
-Acessar seu painel personalizado
-
-Ver notas por matéria, professor e turma
-
-Consultar médias automáticas
-
-Visualizar seus dados acadêmicos
-
-🧱 Arquitetura do Projeto
-/backend
-│── config/           → Conexões (MongoDB)
-│── controllers/      → Regras de negócio
-│── middlewares/      → Autenticação, roles, erros
-│── models/           → Schemas do banco
-│── routes/           → Endpoints da API
-│── seed/             → Script de criação do Admin
-│── server.js         → Inicialização do servidor
-
-/frontend
-│── src/
-│     ├── components/ → Header, ProtectedRoute, Layout, etc.
-│     ├── pages/      → Telas completas (Aluno, Professor, Admin)
-│     ├── context/    → AuthContext (login global)
-│     ├── lib/        → Axios configurado
-│     ├── routes/     → Rotas da aplicação
-│     └── styles/     → Tailwind e CSS global
-
-🔗 Fluxo de Autenticação
-
-Usuário faz login
-
-Backend valida credenciais
-
-Token JWT é gerado
-
-Frontend guarda token no localStorage
-
-Axios envia token automaticamente nas requisições
-
-Middlewares validam token e role
-
-Conteúdo é liberado apenas se o usuário tiver permissão
-
-📌 Destaques Técnicos
-
-API REST bem estruturada
-
-Populates avançados no Mongoose
-
-Autorização por tipo de usuário (Admin, Professor, Aluno)
-
-Lançamento de notas por matéria
-
-Registro de chamada com histórico detalhado
-
-Sistema modular e escalável
-
-Frontend totalmente responsivo e otimizado
-
-📦 Como rodar o projeto (DEV)
-Backend
+### Backend
+```bash
 cd backend
+cp .env.example .env   # ajuste MONGO_URI e JWT_SECRET
 npm install
-npm run dev
+npm run dev            # ou npm start
+```
+API padrão: `http://localhost:4000/api`.
 
-
-Crie um arquivo .env com:
-
-MONGO_URI=mongodb://localhost:27017/pare
-JWT_SECRET=sua_senha_secreta
-PORT=4000
-
-Frontend
+### Frontend
+```bash
 cd frontend
 npm install
 npm run dev
+```
+App padrão: `http://localhost:5173`.
 
+---
 
-Crie .env com:
+## 🔐 Autenticação e perfis
+- Login via `/api/auth/login` (JWT).
+- Middleware `auth.middleware` injeta `req.user`.
+- Middleware `role.middleware` restringe por role.
+  - **admin**: gerencia usuários, turmas, matérias, atribuições.
+  - **professor**: vê turmas atribuídas, lança chamadas, lança/edita notas.
+  - **aluno**: vê turma vinculada, frequência e notas pessoais.
 
-VITE_API_URL=http://localhost:4000/api
+---
 
-📚 Scripts Úteis
-Backend
-Comando	Ação
-npm run dev	Backend com nodemon
-Frontend
-Comando	Ação
-npm run dev	Executa frontend local
-🧪 Testes
+## 🗂️ Principais modelos (backend)
+- `User`: nome, email, senha (hash), role (`admin|professor|aluno`).
+- `Turma`: nome, arrays de alunos e professores/matérias.
+- `AtribuicaoAluno` / `AtribuicaoProfessor`: vínculo aluno↔turma e professor↔turma/matérias.
+- `Nota`: alunoId, turmaId, professorId, P1/P2/T1/T2, média (índice único por aluno/turma).
+- `Chamada`: turma, data, presenças por aluno.
+- Outros: `Registro`, `Aviso`, `Trabalho`.
 
-Utilize Postman ou Insomnia para testar endpoints.
+---
 
-🌱 Criando Admin Inicial
-node seed/createAdmin.js
+## 🌐 Rotas principais (backend)
+- `/api/auth`: login/registro.
+- `/api/admin`: CRUD de usuários (admin-only).
+- `/api/turmas`, `/api/materias`: CRUD básico.
+- `/api/atrib-professor`, `/api/atrib-aluno`: gerencia vínculos.
+- `/api/chamada`: professor registra e lista chamadas por turma.
+- `/api/notas`:
+  - `POST /lancar` (professor): cria/atualiza P1/P2/T1/T2 e média.
+  - `GET /turma/:turmaId/aluno/:alunoId`: professor ou próprio aluno.
+  - `GET /turma/:turmaId`: professor vê notas da turma.
+  - `GET /minhas` (aluno): notas do aluno logado.
+- `/api/aluno/dashboard-dados`: aluno vê turma, frequência e notas.
 
-🎯 Objetivo do Projeto
+---
 
-O PARE foi desenvolvido com foco em:
+## 🖥️ Frontend (fluxos)
+- **Login**: salva token e user no localStorage; rotas protegidas via `ProtectedRoute`.
+- **Header único**: item "Calendario" + botão de sair.
+- **Calendário**: página acessível a todos logados; exibe imagem do calendário escolar.
 
-Organização
+### Admin
+- `AdminDashboard`: tabs para Usuários / Atribuições / Turmas & Matérias.
+- `Usuarios`: lista usuários, cria/edita/exclui com modal.
+- `Atribuicoes`: gerencia vínculos de professores e alunos.
+- `TurmasMaterias`: CRUD de turmas e matérias em tabela com ações.
 
-Transparência
+### Professor
+- `ProfessorDashboard`: atalho para turmas.
+- `ProfessorTurmas`: lista turmas atribuídas; links para chamada, histórico, lançar notas e ver notas lançadas.
+- `Chamada`: marca presença/ausência por aluno e salva.
+- `LancarNota`: escolhe aluno da turma, preenche P1/P2/T1/T2, calcula média local, salva no backend (upsert).
+- `NotasLancadas`: lista notas da turma com médias e datas.
 
-Produtividade
+### Aluno
+- `AlunoDashboard`: mostra turma vinculada, frequência agregada (presenças/ausências), histórico de chamadas e notas com médias. Dados vêm de `/api/aluno/dashboard-dados`.
+- `aluno/Notas`: lista só as notas do aluno autenticado.
 
-Facilidade de uso
+---
 
-Agilidade no registro acadêmico
+## 🎨 Tema e UI
+- Tailwind com paleta laranja personalizada:
+  - Claro: `#c94e1b`
+  - Escuro: `#954532`
+- Fundo global com imagem `src/imgs/background-imagem.jpeg` (cover, fixed).
+- Componentes reutilizam classes utilitárias em `index.css` (cards, botões, inputs).
 
-Arquitetura moderna e sustentável
+---
+
+## 🧠 Pontos de atenção
+- `backend/src/controllers/notas.controller.js`:
+  - Upsert de nota por aluno/turma e cálculo de média centralizado no backend.
+  - Controle de acesso: professor ou próprio aluno podem ler.
+- `backend/src/controllers/aluno.controller.js`:
+  - Agrega chamadas para frequência e retorna notas já populadas.
+- `frontend/src/pages/professor/LancarNota.jsx`:
+  - Média calculada client-side para feedback rápido; sincroniza após salvar.
+- `frontend/src/pages/professor/NotasLancadas.jsx`:
+  - Carrega notas da turma e exibe médias e última atualização.
+
+---
+
