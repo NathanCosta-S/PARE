@@ -115,7 +115,7 @@ App padrão: `http://localhost:5173`.
 
 ---
 
-## 🧠 Pontos de atenção (comentados no código)
+## 🧠 Pontos de atenção
 - `backend/src/controllers/notas.controller.js`:
   - Upsert de nota por aluno/turma e cálculo de média centralizado no backend.
   - Controle de acesso: professor ou próprio aluno podem ler.
@@ -128,10 +128,5 @@ App padrão: `http://localhost:5173`.
 
 ---
 
-## ✅ Checklist para apresentação
-- Mostrar login e mudança de role (redirect para dashboard correspondente).
-- Admin: criar usuário, criar turma/matéria, atribuir professor/aluno.
-- Professor: abrir turma, registrar chamada, lançar/editar notas; ver notas lançadas.
-- Aluno: ver painel com turma, frequência e notas/médias.
-- Calendário: página comum a todos (imagem do calendário escolar).
+
 
